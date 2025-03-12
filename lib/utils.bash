@@ -55,7 +55,6 @@ list_github_tags() {
 }
 
 list_all_versions() {
-	# TODO: Adapt this. By default we simply list the tag names from GitHub releases.
 	# Change this function if helmify has other means of determining installable versions.
 	list_github_tags
 }
@@ -72,7 +71,6 @@ download_release() {
 		fail "$arch"
 	fi
 	local platform="${os}_${arch}"
-	# TODO: Adapt the release URL convention for helmify
 	url="$GH_REPO/releases/download/v${version}/helmify_$platform.tar.gz"
 
 	echo "$url"
@@ -93,7 +91,6 @@ install_version() {
 		mkdir -p "$install_path"
 		cp -r "$ASDF_DOWNLOAD_PATH"/* "$install_path"
 
-		# TODO: Assert helmify executable exists.
 		local tool_cmd
 		tool_cmd="$(echo "$TOOL_TEST" | cut -d' ' -f1)"
 		test -x "$install_path/$tool_cmd" || fail "Expected $install_path/$tool_cmd to be executable."

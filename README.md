@@ -2,7 +2,7 @@
 
 # asdf-helmify [![Build](https://github.com/0hlov3/asdf-helmify/actions/workflows/build.yml/badge.svg)](https://github.com/0hlov3/asdf-helmify/actions/workflows/build.yml) [![Lint](https://github.com/0hlov3/asdf-helmify/actions/workflows/lint.yml/badge.svg)](https://github.com/0hlov3/asdf-helmify/actions/workflows/lint.yml)
 
-[helmify](https://github.com/0hlov3/asdf-plugin-helmify) plugin for the [asdf version manager](https://asdf-vm.com).
+[helmify](https://github.com/0hlov3/asdf-helmify) plugin for the [asdf version manager](https://asdf-vm.com).
 
 </div>
 
@@ -14,8 +14,6 @@
 - [License](#license)
 
 # Dependencies
-
-**TODO: adapt this section**
 
 - `bash`, `curl`, `tar`, and [POSIX utilities](https://pubs.opengroup.org/onlinepubs/9699919799/idx/utilities.html).
 - `SOME_ENV_VAR`: set this environment variable in your shell config to load the correct version of tool x.
@@ -40,7 +38,10 @@ asdf list all helmify
 asdf install helmify latest
 
 # Set a version globally (on your ~/.tool-versions file)
-asdf global helmify latest
+asdf set -u helmify latest
+
+# Set a version locally (on your current project)
+asdf set helmify latest
 
 # Now helmify commands are available
 helmify --help
