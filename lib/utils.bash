@@ -24,9 +24,8 @@ get_machine_os() {
   OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 
   case "${OS}" in
-  darwin*) echo "darwin" ;;
-  linux*) echo "linux" ;;
-  freebsd*) echo "freebsd" ;;
+  darwin*) echo "Darwin" ;;
+  linux*) echo "Linux" ;;
   *) fail "OS not supported: ${OS}" ;;
   esac
 }
@@ -36,7 +35,7 @@ get_machine_arch() {
   ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
 
   case "${ARCH}" in
-  x86_64) echo "amd64" ;;
+  x86_64) echo "x86_64" ;;
   aarch64) echo "arm64" ;;
   armv8l) echo "arm64" ;;
   armv7l) arch="arm" ;;
@@ -78,6 +77,7 @@ download_release() {
 	# TODO: Adapt the release URL convention for helmify
 	url="$GH_REPO/releases/download/v${version}/helmify_${os}_${arch}.tar.gz"
 
+  echo "$url"
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
 }
