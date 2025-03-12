@@ -3,9 +3,9 @@
 set -euo pipefail
 
 # TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for helmify.
-GH_REPO="https://github.com/0hlov3/asdf-plugin-helmify"
+GH_REPO="https://github.com/arttor/helmify"
 TOOL_NAME="helmify"
-TOOL_TEST="helmify --help"
+TOOL_TEST="helmify -version"
 
 fail() {
 	echo -e "asdf-$TOOL_NAME: $*"
