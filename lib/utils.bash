@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for helmify.
 GH_REPO="https://github.com/arttor/helmify"
 TOOL_NAME="helmify"
 TOOL_TEST="helmify -version"
@@ -20,30 +19,29 @@ if [ -n "${GITHUB_API_TOKEN:-}" ]; then
 fi
 
 get_machine_os() {
-  local OS
-  OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+	local OS
+	OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 
-  case "${OS}" in
-  darwin*) echo "Darwin" ;;
-  linux*) echo "Linux" ;;
-  *) fail "OS not supported: ${OS}" ;;
-  esac
+	case "${OS}" in
+	darwin*) echo "Darwin" ;;
+	linux*) echo "Linux" ;;
+	*) fail "OS not supported: ${OS}" ;;
+	esac
 }
 
 get_machine_arch() {
-  local ARCH
-  ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
+	local ARCH
+	ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
 
-  case "${ARCH}" in
-  x86_64) echo "x86_64" ;;
-  aarch64) echo "arm64" ;;
-  armv8l) echo "arm64" ;;
-  armv7l) arch="arm" ;;
-  arm64) echo "arm64" ;;
-  *) fail "Architecture not supported: $ARCH" ;;
-  esac
+	case "${ARCH}" in
+	x86_64) echo "x86_64" ;;
+	aarch64) echo "arm64" ;;
+	armv8l) echo "arm64" ;;
+	armv7l) arch="arm" ;;
+	arm64) echo "arm64" ;;
+	*) fail "Architecture not supported: $ARCH" ;;
+	esac
 }
-
 
 sort_versions() {
 	sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' |
@@ -67,17 +65,17 @@ download_release() {
 	version="$1"
 	filename="$2"
 
-  if ! os=$(get_machine_os); then
-    fail "$os"
-  fi
-  if ! arch=$(get_machine_arch); then
-    fail "$arch"
-  fi
-  local platform="${os}_${arch}"
+	if ! os=$(get_machine_os); then
+		fail "$os"
+	fi
+	if ! arch=$(get_machine_arch); then
+		fail "$arch"
+	fi
+	local platform="${os}_${arch}"
 	# TODO: Adapt the release URL convention for helmify
-	url="$GH_REPO/releases/download/v${version}/helmify_${os}_${arch}.tar.gz"
+	url="$GH_REPO/releases/download/v${version}/helmify_$platform.tar.gz"
 
-  echo "$url"
+	echo "$url"
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
 }
