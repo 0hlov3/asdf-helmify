@@ -19,6 +19,33 @@ if [ -n "${GITHUB_API_TOKEN:-}" ]; then
 	curl_opts=("${curl_opts[@]}" -H "Authorization: token $GITHUB_API_TOKEN")
 fi
 
+get_machine_os() {
+  local OS
+  OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+
+  case "${OS}" in
+  darwin*) echo "darwin" ;;
+  linux*) echo "linux" ;;
+  freebsd*) echo "freebsd" ;;
+  *) fail "OS not supported: ${OS}" ;;
+  esac
+}
+
+get_machine_arch() {
+  local ARCH
+  ARCH=$(uname -m | tr '[:upper:]' '[:lower:]')
+
+  case "${ARCH}" in
+  x86_64) echo "amd64" ;;
+  aarch64) echo "arm64" ;;
+  armv8l) echo "arm64" ;;
+  armv7l) arch="arm" ;;
+  arm64) echo "arm64" ;;
+  *) fail "Architecture not supported: $ARCH" ;;
+  esac
+}
+
+
 sort_versions() {
 	sed 'h; s/[+-]/./g; s/.p\([[:digit:]]\)/.z\1/; s/$/.z/; G; s/\n/ /' |
 		LC_ALL=C sort -t. -k 1,1 -k 2,2n -k 3,3n -k 4,4n -k 5,5n | awk '{print $2}'
@@ -41,8 +68,15 @@ download_release() {
 	version="$1"
 	filename="$2"
 
+  if ! os=$(get_machine_os); then
+    fail "$os"
+  fi
+  if ! arch=$(get_machine_arch); then
+    fail "$arch"
+  fi
+  local platform="${os}_${arch}"
 	# TODO: Adapt the release URL convention for helmify
-	url="$GH_REPO/archive/v${version}.tar.gz"
+	url="$GH_REPO/releases/download/v${version}/helmify_${os}_${arch}.tar.gz"
 
 	echo "* Downloading $TOOL_NAME release $version..."
 	curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"

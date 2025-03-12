@@ -34,7 +34,7 @@ helmify:
 
 ```shell
 # Show all installable versions
-asdf list-all helmify
+asdf list all helmify
 
 # Install specific version
 asdf install helmify latest
